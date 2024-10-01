@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance Portal</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Login Page -->
+    <div id="login-section">
+        <h2>Login</h2>
+        <form id="loginForm">
+            <label for="username">Username:</label>
+            <input type="text" id="username" required>
+            <label for="password">Password:</label>
+            <input type="password" id="password" required>
+            <label for="role">Role:</label>
+            <select id="role">
+                <option value="student">Student</option>
+                <option value="classTeacher">Class Teacher</option>
+                <option value="subjectTeacher">Subject Teacher</option>
+            </select>
+            <button type="submit">Login</button>
+        </form>
+    </div>
+
+    <!-- Dashboard Section (hidden initially) -->
+    <div id="dashboard" style="display:none;">
+        <h2>Welcome <span id="userRole"></span></h2>
+        <div id="student-section" style="display:none;">
+            <h3>View Attendance</h3>
+            <p>Your attendance: <span id="student-attendance">85%</span></p>
+            <h3>View Marks</h3>
+            <p>Your marks: <span id="student-marks">85, 90, 75</span></p>
+            <h3>View Notices</h3>
+            <ul id="student-notices">
+                <li>Notice 1</li>
+                <li>Notice 2</li>
+            </ul>
+        </div>
+
+        <div id="teacher-section" style="display:none;">
+            <h3>Edit Attendance</h3>
+            <input type="text" placeholder="Student ID" id="edit-attendance-id">
+            <input type="text" placeholder="New Attendance" id="edit-attendance-value">
+            <button id="update-attendance">Update Attendance</button>
+            
+            <h3 id="edit-marks-heading" style="display:none;">Edit Marks</h3>
+            <input type="text" placeholder="Student ID" id="edit-marks-id">
+            <input type="text" placeholder="New Marks" id="edit-marks-value">
+            <button id="update-marks" style="display:none;">Update Marks</button>
+            
+            <h3 id="edit-notices-heading" style="display:none;">Post Notice</h3>
+            <textarea id="new-notice" placeholder="New Notice"></textarea>
+            <button id="post-notice">Post Notice</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
