@@ -1,27 +1,26 @@
+<?php include 'dbconnect.php'?>
 <?php
     $flag=false;
     $cpflag=true;
+    $alreadyexist=false;
 if(isset($_POST['username'])){
-    $server="localhost";
-    $username="root";
-    $password= "";
-
-    $connect=mysqli_connect($server, $username, $password); 
-    if(!$connect){
-        echo "Connection failed". mysqli_connect_error();
-    }
+    
     $Username=$_POST['username'];
     $email=$_POST['email'];
     $password=$_POST['password'];
     $cpassword=$_POST['cpassword'];
     $Role=$_POST['role'];
-
-    if($cpassword != $password)
+    $existsql= "Select * from `credentials` where email='$email'";
+    $result=mysqli_query($connect, $existsql);
+    if(mysqli_num_rows($result) != 0){
+        $alreadyexist=true;
+    }
+    else if($cpassword != $password)
     {
         $cpflag=false;
     }
     else{
-        $sql ="INSERT INTO `school portal`.`credentials` ( `Username`, `E-mail`, `Password`, `Role`, `Date`) VALUES ('$Username', '$email', '$password', '$Role', current_timestamp());"; 
+        $sql ="INSERT INTO `school portal`.`credentials` ( `Username`, `email`, `Password`, `Role`, `Date`) VALUES ('$Username', '$email', '$password', '$Role', current_timestamp());"; 
 
     if($connect -> query($sql)){
         // echo"Successfully Inserted";
@@ -40,39 +39,15 @@ if(isset($_POST['username'])){
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Registration</title>
+    <title>User Registration | Org. Name</title>
     <link rel="stylesheet" href="../StyleSheets/style.css">
 </head>
-<style>
-    .successmsg{
-        width: 100%;
-        background-color:rgb(127, 239, 127);
-        color: darkgreen;
-        font-weight: bold;
-        border-radius: 5px;
-        padding:0.5rem;
-        animation: toandfro 100ms ease-in-out;
-    }
-    .mismatch{
-        width: 100%;
-        background-color:rgb(239, 127, 127);
-        color: darkred;
-        font-weight: bold;
-        border-radius: 5px;
-        padding:0.5rem;
-        animation: toandfro 100ms ease-in-out;
-    }
-    @keyframes toandfro{
-        from{
-            transform: translateX(-10%);
-        }
-
-        to{
-            transform: translateX(0%);
-        }
-    }
-</style>
 <body>
+
+    <div class="org">
+       <center> <img src="./MEdia/#" alt="Organization Logo"></center>
+        <h1>Organization Name</h1>
+    </div>
     <!-- Registration Page -->
     <div id="login-section">
         <h2>User Registration</h2>
@@ -80,7 +55,7 @@ if(isset($_POST['username'])){
             <label for="reg-username">Username:</label>
             <input type="text" name="username" id="username" placeholder="Username" required>
             <label for="email">E-mail Id:</label>
-            <input type="email" name="email" name="email" id="email" placeholder="E-mail Id" required>
+            <input type="email" name="email" id="email" placeholder="E-mail Id" required>
             <label for="reg-password">Create Password:</label>
             <input type="password" name="password" id="password" placeholder="Create Password" required>
             <label for="reg-password">Confirm Password:</label>
@@ -98,8 +73,15 @@ if(isset($_POST['username'])){
                 echo"<div class='mismatch'>Passwords do not match.</div>";
             }
             if($flag == true){
-                    echo "<div class='successmsg'>Registered Successfully!</div>";
-                }            
+                    echo "<div class='successmsg'>Registered Successfully!</div>
+                            <br>
+                            <a href='../index.php'>Login</a>
+                    ";
+                } 
+            if($alreadyexist)
+            {
+                echo"<div class='mismatch'>Account with this Email already exist!</div>";
+            }           
             ?>
     </div>
 

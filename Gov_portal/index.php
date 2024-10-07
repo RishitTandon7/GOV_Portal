@@ -1,5 +1,6 @@
+<?php include './Webpages/dbconnect.php'?>
 <?php
-$login=false;
+$login=true;
  if($_SERVER["REQUEST_METHOD"] == "POST"){
     $server="localhost";
     $username="root";
@@ -13,6 +14,7 @@ $login=false;
 
     $email=$_POST['email'];
     $password=$_POST['password'];
+    $role=$_POST['role'];
 
     $sql="SELECT * FROM `credentials` where email='$email' and Password='$password'";
     $result = mysqli_query($connect,$sql);
@@ -24,22 +26,31 @@ $login=false;
         session_start();
         $_SESSION['loggedin']=true;
         $_SESSION['username']=$username;
-        header("location: ./Webpages/dashboard.html");
-    }
-    
+        
+        if($role == 'student')
+        header("location: ./Webpages/sdashboard.html");
+
+        else
+        header("location: ./Webpages/tdashboard.php");
+    }   
 
  }
-?>
-
+?> 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Attendance Portal</title>
+    <title>Login  | Org. Name</title>
     <link rel="stylesheet" href="./StyleSheets/style.css">
 </head>
 <body>
+    <!-- Org. name and Logo -->
+    <div class="org">
+       <center> <img src="./MEdia/#" alt="Organization Logo"></center>
+        <h1>Organization Name</h1>
+    </div>
+
     <!-- Login Page -->
     <div id="login-section">
         <h2>Login</h2>
@@ -58,19 +69,20 @@ $login=false;
         </form>
         <div class="register"><a href="./Webpages/Registration.php">Register Here</a></div>
         <?php
-            if($login){
-                echo "<div class='successmsg'>Login Successfully!</div>";
-            }
+            // if($login){
+            //     echo "<div class='successmsg'>Login Successfully!</div>";
+            // }
 
-            else if(!$login){
+            if(!$login){
                 echo"<div class='mismatch'>Invalid Credentials</div>";
             }
         ?>
     </div>
     <style>
-        .register{
+        .register a{
             text-decoration: none;
             font-size: 0.8rem;
+            color: white;
         }
         .register:hover{
             text-decoration: underline;
